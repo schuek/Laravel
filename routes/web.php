@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\DatosController;
 
 //gestion de libros
-use App\Http\Controllers\LibrosController;
+use App\Http\Controllers\LibroController;
 //1. Ruta básica
 Route::get('/', function () {
     return view('welcome');
@@ -95,10 +95,23 @@ Route::view('/formulario', 'formulario');
 
 
 //ejercicio gestion libros:
-Route::get('/libros',[LibroController::class,'index'])->name('libros.create');
+// 1. LISTADO GENERAL (Faltaba esta)
+Route::get('/libro', [LibroController::class, 'index'])->name('libro.index');
 
-//formulario alta
-Route::get('libros/crear', [LibroController::class, 'create'])->name('libro.create');
+// 2. ALTA (GET):
+Route::get('/libro/alta', [LibroController::class, 'create'])->name('libro.create');
 
-//Post
-Route::post('/libros', [LibroController::class, 'store'])->name('Libros.store');
+// 3. ALTA (POST): Guardar datos
+Route::post('/libro/alta', [LibroController::class, 'store'])->name('libro.store');
+
+// 4. CONSULTAR DETALLE (GET)
+// Esta ruta "atrapa" cualquier cosa después de /libro/, por eso va al final
+Route::get('/libro/{id}', [LibroController::class, 'show'])->name('libro.show');
+
+// 5. BORRAR (DELETE)
+Route::delete('/libro/{id}', [LibroController::class, 'destroy'])->name('libro.destroy');
+// 5. EDITAR (GET): Muestra el formulario con los datos del libro
+Route::get('/libro/{id}/editar', [LibroController::class, 'edit'])->name('libro.edit');
+
+// 6. ACTUALIZAR (PUT): Guarda los cambios
+Route::put('/libro/{id}', [LibroController::class, 'update'])->name('libro.update');
